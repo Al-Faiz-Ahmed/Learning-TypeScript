@@ -5,12 +5,15 @@ const secondsElement = document.getElementById("seconds");
 const miliSecsElement = document.getElementById("mili-secs");
 const playButton = document.getElementById("play-btn");
 const resetButton = document.getElementById("reset-btn");
-let disablePlayButton = false;
 let miliSecsNumber = 0;
-let secsNumber = 0;
+let secsNumber = 55;
 let minsNumber = 0;
 let hourseNumber = 0;
+let disablePlayButton = false;
 let timer; /* setInterval varable */
+const updateTimerOnDOM = (element, timer) => {
+    element.innerText = timer <= 9 ? `0${timer}` : `${timer}`;
+};
 const actionHandler = (actionType) => {
     if (actionType === "play") {
         timer = setInterval(() => {
@@ -30,14 +33,10 @@ const actionHandler = (actionType) => {
             else if (hourseNumber >= 60) {
                 hourseNumber = 0;
             }
-            miliSecsElement.innerText =
-                miliSecsNumber <= 9 ? `0${miliSecsNumber}` : `${miliSecsNumber}`;
-            secondsElement.innerText =
-                secsNumber <= 9 ? `0${secsNumber}` : `${secsNumber}`;
-            minutesElement.innerText =
-                minsNumber <= 9 ? `0${minsNumber}` : `${minsNumber}`;
-            hourseElement.innerText =
-                hourseNumber <= 9 ? `0${hourseNumber}` : `${hourseNumber}`;
+            updateTimerOnDOM(miliSecsElement, miliSecsNumber);
+            updateTimerOnDOM(secondsElement, secsNumber);
+            updateTimerOnDOM(minutesElement, minsNumber);
+            updateTimerOnDOM(hourseElement, hourseNumber);
         }, 10);
     }
     if (actionType === "pause") {
@@ -49,10 +48,10 @@ const actionHandler = (actionType) => {
         secsNumber = 0;
         minsNumber = 0;
         hourseNumber = 0;
-        miliSecsElement.innerHTML = "00";
-        secondsElement.innerHTML = "00";
-        minutesElement.innerHTML = "00";
-        hourseElement.innerHTML = "00";
+        updateTimerOnDOM(miliSecsElement, 0);
+        updateTimerOnDOM(secondsElement, 0);
+        updateTimerOnDOM(minutesElement, 0);
+        updateTimerOnDOM(hourseElement, 0);
         playButton.innerText = "PLAY";
         disablePlayButton = false;
     }
